@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Schmuck Tracker – Design Preview</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d0d0d;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  /* ── FENSTER ── */
+  .window {
+    width: 520px;
+    background: #141414;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  }
+
+  /* ── TITELLEISTE ── */
+  .titlebar {
+    background: #1a1a1a;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .titlebar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .titlebar-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .titlebar-text {
+    color: #999;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  .titlebar-controls {
+    display: flex;
+    gap: 8px;
+  }
+  .tbtn {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .tbtn.close  { background: #ff5f57; }
+  .tbtn.min    { background: #febc2e; }
+  .tbtn.max    { background: #28c840; }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #1e1a0a 100%);
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  /* ── RING SVG ICON ── */
+  .ring-icon {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+  }
+
+  .header-info h1 {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .header-info h1 span {
+    color: #D4A017;
+  }
+  .header-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #4CAF50;
+    box-shadow: 0 0 6px #4CAF50;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .status-text {
+    color: #4CAF50;
+    font-size: 12px;
+  }
+
+  /* ── PREISKARTEN ── */
+  .prices {
+    display: flex;
+    gap: 10px;
+    padding: 16px 24px;
+  }
+  .price-card {
+    flex: 1;
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .price-card:hover {
+    border-color: #D4A017;
+  }
+  .price-card .label {
+    color: #666;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .price-card .value {
+    color: #D4A017;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .price-card .change {
+    font-size: 11px;
+    margin-top: 3px;
+    color: #4CAF50;
+  }
+  .price-card.preis {
+    border-color: #D4A017;
+    background: #1e1b0a;
+  }
+  .price-card.preis .value {
+    font-size: 22px;
+    color: #FFD700;
+  }
+
+  /* ── BUTTONS ── */
+  .buttons {
+    display: flex;
+    gap: 10px;
+    padding: 0 24px 16px;
+  }
+  .btn {
+    flex: 1;
+    padding: 11px 8px;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+  }
+  .btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-scan {
+    background: #D4A017;
+    color: #000;
+  }
+  .btn-auto {
+    background: #1565c0;
+    color: #fff;
+  }
+  .btn-auto.stop {
+    background: #c62828;
+  }
+  .btn-settings {
+    background: #2a2a2a;
+    color: #aaa;
+    border: 1px solid #3a3a3a;
+    flex: 0.7;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: #2a2a2a;
+    margin: 0 24px;
+  }
+
+  /* ── PROFIT RECHNER ── */
+  .profit-section {
+    padding: 14px 24px 10px;
+  }
+  .section-title {
+    color: #666;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #2a2a2a;
+  }
+  .profit-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .profit-input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .profit-input-group label {
+    color: #555;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+  .profit-input-group input {
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: #fff;
+    font-size: 13px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .profit-input-group input:focus {
+    border-color: #D4A017;
+  }
+  .profit-result {
+    background: #1a1a0a;
+    border: 1px solid #D4A01744;
+    border-radius: 8px;
+    padding: 10px 14px;
+    min-width: 120px;
+    text-align: center;
+  }
+  .profit-result .res-label {
+    color: #666;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .profit-result .res-value {
+    color: #4CAF50;
+    font-size: 18px;
+    font-weight: 800;
+    margin-top: 2px;
+  }
+  .profit-result .res-pct {
+    color: #666;
+    font-size: 11px;
+  }
+
+  /* ── LOG ── */
+  .log-section {
+    padding: 10px 24px 4px;
+  }
+  .log-box {
+    background: #0d0d0d;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    padding: 8px 10px;
+    height: 80px;
+    overflow-y: auto;
+    font-family: 'Consolas', monospace;
+    font-size: 10px;
+    color: #444;
+    line-height: 1.6;
+  }
+  .log-box .log-line { color: #555; }
+  .log-box .log-ok   { color: #4CAF50; }
+  .log-box .log-warn { color: #FF9800; }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 10px 24px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .countdown {
+    color: #444;
+    font-size: 11px;
+  }
+  .countdown span { color: #D4A017; }
+  .autostart-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #444;
+    font-size: 11px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .autostart-check input {
+    accent-color: #D4A017;
+  }
+</style>
+</head>
+<body>
+
+<div class="window">
+
+  <!-- Titelleiste -->
+  <div class="titlebar">
+    <div class="titlebar-left">
+      <svg class="titlebar-icon" viewBox="0 0 22 22" fill="none">
+        <!-- Mini Ring -->
+        <ellipse cx="11" cy="13" rx="8" ry="4" stroke="#D4A017" stroke-width="2" fill="none"/>
+        <ellipse cx="11" cy="11" rx="8" ry="4" stroke="#D4A017" stroke-width="2" fill="#141414"/>
+        <ellipse cx="11" cy="9" rx="4" ry="3" fill="#4fc3f7" opacity="0.7"/>
+      </svg>
+      <span class="titlebar-text">Schmuck_TRACKER v0.0.7</span>
+    </div>
+    <div class="titlebar-controls">
+      <div class="tbtn min"></div>
+      <div class="tbtn max"></div>
+      <div class="tbtn close"></div>
+    </div>
+  </div>
+
+  <!-- Header mit Ring-Icon -->
+  <div class="header">
+    <!-- Gold Ring SVG -->
+    <svg class="ring-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Ring Band -->
+      <ellipse cx="50" cy="72" rx="32" ry="12" fill="url(#bandGrad)" stroke="#B8860B" stroke-width="1.5"/>
+      <ellipse cx="50" cy="60" rx="32" ry="12" fill="url(#bandTop)" stroke="#B8860B" stroke-width="1.5"/>
+      <!-- Band sides -->
+      <path d="M18 60 Q14 66 18 72" stroke="#B8860B" stroke-width="1.5" fill="none"/>
+      <path d="M82 60 Q86 66 82 72" stroke="#B8860B" stroke-width="1.5" fill="none"/>
+      <!-- Setting prongs -->
+      <path d="M34 28 L38 46 M66 28 L62 46 M50 22 L50 44 M30 36 L42 48 M70 36 L58 48" stroke="#D4A017" stroke-width="2" stroke-linecap="round"/>
+      <!-- Gem (aquamarine/blue) -->
+      <polygon points="50,18 62,30 58,46 42,46 38,30" fill="url(#gemGrad)" stroke="#87CEEB" stroke-width="1"/>
+      <!-- Gem highlight -->
+      <polygon points="50,20 58,30 55,38 45,38 42,30" fill="url(#gemInner)" opacity="0.6"/>
+      <polygon points="50,22 54,28 52,32 48,32 46,28" fill="white" opacity="0.4"/>
+
+      <defs>
+        <linearGradient id="bandGrad" x1="18" y1="60" x2="82" y2="72" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#8B6914"/>
+          <stop offset="30%"  stop-color="#D4A017"/>
+          <stop offset="60%"  stop-color="#FFD700"/>
+          <stop offset="80%"  stop-color="#D4A017"/>
+          <stop offset="100%" stop-color="#8B6914"/>
+        </linearGradient>
+        <linearGradient id="bandTop" x1="18" y1="60" x2="82" y2="60" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#6B4F0A"/>
+          <stop offset="40%"  stop-color="#C49010"/>
+          <stop offset="50%"  stop-color="#FFE066"/>
+          <stop offset="60%"  stop-color="#C49010"/>
+          <stop offset="100%" stop-color="#6B4F0A"/>
+        </linearGradient>
+        <linearGradient id="gemGrad" x1="38" y1="18" x2="62" y2="46" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#B0E0FF"/>
+          <stop offset="50%"  stop-color="#4fc3f7"/>
+          <stop offset="100%" stop-color="#0277BD"/>
+        </linearGradient>
+        <linearGradient id="gemInner" x1="42" y1="20" x2="58" y2="46" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="white"/>
+          <stop offset="100%" stop-color="#4fc3f7"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <div class="header-info">
+      <h1>LYL.<span>GG</span> Schmuck Tracker</h1>
+      <div class="header-status">
+        <div class="status-dot"></div>
+        <span class="status-text">Aktualisiert um 17:13</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preiskarten -->
+  <div class="prices">
+    <div class="price-card">
+      <div class="label">Min</div>
+      <div class="value">10.500€</div>
+      <div class="change" style="color:#666">Tiefstkurs</div>
+    </div>
+    <div class="price-card preis">
+      <div class="label">Preis</div>
+      <div class="value">14.740€</div>
+      <div class="change">▲ +17,9%</div>
+    </div>
+    <div class="price-card">
+      <div class="label">Max</div>
+      <div class="value">14.500€</div>
+      <div class="change" style="color:#666">Höchstkurs</div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="buttons">
+    <button class="btn btn-scan">⟳ Jetzt Scannen</button>
+    <button class="btn btn-auto">▶ Auto-Start</button>
+    <button class="btn btn-settings">⚙ Settings</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Profit Rechner -->
+  <div class="profit-section">
+    <div class="section-title">Profit Rechner</div>
+    <div class="profit-row">
+      <div class="profit-input-group">
+        <label>EINKAUFSPREIS (€)</label>
+        <input type="number" value="10500" id="buy" oninput="calcProfit()">
+      </div>
+      <div class="profit-input-group">
+        <label>ANZAHL STÜCK</label>
+        <input type="number" value="1" id="qty" oninput="calcProfit()">
+      </div>
+      <div class="profit-result">
+        <div class="res-label">Profit</div>
+        <div class="res-value" id="profitVal">+4.240€</div>
+        <div class="res-pct" id="profitPct">▲ +40,4%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Log -->
+  <div class="log-section">
+    <div class="section-title">Log</div>
+    <div class="log-box">
+      <div class="log-line">[17:13:05]  Starte Chrome (undetected-chromedriver)...</div>
+      <div class="log-warn">[17:13:12]  UC Fehler: session not created — Fallback...</div>
+      <div class="log-line">[17:13:12]  Starte Chrome (webdriver-manager)...</div>
+      <div class="log-line">[17:13:22]  Gefunden: Min=10500€ | Preis=14740€ | Max=14500€</div>
+      <div class="log-ok">  [17:13:28]  Sheet 2: ✅ Aktualisiert (HTTP 200)</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="countdown">Nächstes Update in: <span>14:32</span></div>
+    <label class="autostart-check">
+      <input type="checkbox"> Windows-Autostart
+    </label>
+  </div>
+
+</div>
+
+<script>
+  const preis = 14740;
+  function calcProfit() {
+    const buy = parseFloat(document.getElementById('buy').value) || 0;
+    const qty = parseFloat(document.getElementById('qty').value) || 1;
+    const profit = (preis - buy) * qty;
+    const pct = buy > 0 ? ((preis - buy) / buy * 100) : 0;
+    const el = document.getElementById('profitVal');
+    const ep = document.getElementById('profitPct');
+    el.textContent = (profit >= 0 ? '+' : '') + profit.toLocaleString('de-DE') + '€';
+    el.style.color = profit >= 0 ? '#4CAF50' : '#f44336';
+    ep.textContent = (pct >= 0 ? '▲ +' : '▼ ') + pct.toFixed(1) + '%';
+    ep.style.color = pct >= 0 ? '#4CAF50' : '#f44336';
+  }
+  calcProfit();
+</script>
+</body>
+</html>
