@@ -1,12 +1,5 @@
 {
-    "webapp_sheet1": "https://script.google.com/macros/s/AKfycbxocUUdCMjKj3uaXX3Pv5vceb7DJbAq65mSlrU_kPmaZKyhTnAC7zsSugWDTmxI35LP/exec",
-    "webapp_sheet2": "https://script.google.com/macros/s/AKfycbxocUUdCMjKj3uaXX3Pv5vceb7DJbAq65mSlrU_kPmaZKyhTnAC7zsSugWDTmxI35LP/exec",
-    "interval_minuten": 15,
-    "web_app_url": "https://script.google.com/macros/s/AKfycbxocUUdCMjKj3uaXX3Pv5vceb7DJbAq65mSlrU_kPmaZKyhTnAC7zsSugWDTmxI35LP/exec",
-    "tab": "Schmuck History",
-    "min_cell": "C",
-    "preis_cell": "D",
-    "max_cell": "E",
-    "interval": 900,
-    "eingerichtet": true
+  "web_app_url": "https://script.google.com/macros/s/AKfycbxGlg34829lBHLf1zy63b-vkmu2ji_TSeoHqDLBqtO6a36p1TjB244p1pB6KxIOTbzF/exec",
+  "interval": 300,
+  "eingerichtet": true
 }
