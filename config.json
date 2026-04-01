@@ -1,12 +1,12 @@
 {
-  "webapp_sheet1": "https://script.google.com/macros/s/AKfycbzlZS1rYFqOwwYkDp2N6W0xJwsyPsWF8Kx1ebXa0CqlEOKZ/exec",
-  "webapp_sheet2": "https://script.google.com/macros/s/AKfycbyZBP0wVP6MEMmQz2jZimAu2GcJHQvXgMbj6V7JGoURbQrtEjn5C_9OsPXBnTPAUZjn/exec",
-  "interval_minuten": 15,
-  "web_app_url": "https://script.google.com/macros/s/AKfycbyZBP0wVP6MEMmQz2jZimAu2GcJHQvXgMbj6V7JGoURbQrtEjn5C_9OsPXBnTPAUZjn/exec",
-  "tab": "Test Neustart",
-  "min_cell": "C4",
-  "preis_cell": "D4",
-  "max_cell": "E4",
-  "interval": 300,
-  "eingerichtet": true
+    "webapp_sheet1": "https://script.google.com/macros/s/AKfycbxocUUdCMjKj3uaXX3Pv5vceb7DJbAq65mSlrU_kPmaZKyhTnAC7zsSugWDTmxI35LP/exec",
+    "webapp_sheet2": "https://script.google.com/macros/s/AKfycbxocUUdCMjKj3uaXX3Pv5vceb7DJbAq65mSlrU_kPmaZKyhTnAC7zsSugWDTmxI35LP/exec",
+    "interval_minuten": 15,
+    "web_app_url": "https://script.google.com/macros/s/AKfycbxocUUdCMjKj3uaXX3Pv5vceb7DJbAq65mSlrU_kPmaZKyhTnAC7zsSugWDTmxI35LP/exec",
+    "tab": "Schmuck History",
+    "min_cell": "C",
+    "preis_cell": "D",
+    "max_cell": "E",
+    "interval": 900,
+    "eingerichtet": true
 }
